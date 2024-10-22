@@ -1,34 +1,69 @@
 import pygame 
+import config
+import random
+
+from weapons import Melee
 from player import Player
+from enemy import Enemy
 
 pygame.init()
-icon = pygame.image.load("assets/Icon_1.png")
-pygame.display.set_icon(icon)
 
-screen = pygame.display.set_mode((1280,720))
-pygame.display.set_caption("Satan´s redemption")
+
+screen = pygame.display.set_mode((config.WIN_HEIGHT,config.WIN_WIDTH))
+pygame.display.set_caption("Inferno´s redemption")
+pygame.display.set_icon(config.ICON)
+
+
+#screen_Background = config.menu_background
+
+Pj = Player(config.WIN_WIDTH / 2 ,config.WIN_HEIGHT / 2)
+enemies = [Enemy(random.randint(0, config.WIN_WIDTH-2), random.randint(0, config.WIN_HEIGHT - 2)) for _ in range(0,20)]
+
+
 running = True 
 
-fondo = pygame.image.load("assets/Background_1.png")
-image_width, image_height = fondo.get_size()
-aspect_ratio = image_height / image_width
-new_height = 1280 * aspect_ratio
-fondo = pygame.transform.scale(fondo, (1280, new_height))
-
-screen_Background = fondo
-Pj = Player(100,100)
 while running:
     screen.fill((0,0,0))
-    screen.blit(screen_Background,(0,0))
+    #screen.blit(screen_Background,(0,0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos()
+            Pj.attack(event)
+
+
+
+    sword = Melee(10, 10 , Pj.get_pos()[0], Pj.get_pos()[1])
+
+
+
+
+
+
+
+
+
+
 
     key = pygame.key.get_pressed()
     
+
+
+
+
+
+
+
+
+
+    for enemy in enemies:
+        enemy.draw(screen)
+        
     Pj.draw(screen)
     Pj.move(key)
+    sword.draw(screen)
     pygame.display.update()
 
 pygame.quit()
