@@ -1,28 +1,30 @@
 import pygame 
 import config
+from weapons import Sword, Bow
 import math as mt
 
 
+
 class Player():
-    def __init__(self, x,y):
+    def __init__(self):
         #stats del juego 
         self.armor = 0
         self.life = 100
         self.velocity = 0.5
-        self.weapon = [False, "sword"]
-        self.pvp = False
+        self.weapon_type =  "sword"
         
         #vista en pantalla
-        self.__x = x
-        self.__y = y
-        self.pj_shape = pygame.Rect(0, 0 , 50 , 60)
-        self.pj_shape.center = (self.__x, self.__y)
+        self.x = (config.WIN_WIDTH / 2)
+        self.y = (config.WIN_HEIGHT / 2)
+        self.weapon =Sword(10, self.x, self.y)
+        self.pj_shape = pygame.Rect(0, 0 , 49 , 60)
+        self.pj_shape.center = (self.x, self.y)
 
         #Imagen y rect
         self.animations = config.animations
         self.frame = 0
         self.image = self.animations[self.frame]
-        self.flip = False
+        self.flip = True
         self.color = (255,255,255)
         self.ticks = pygame.time.get_ticks()
 
@@ -37,17 +39,16 @@ class Player():
     def move(self,keys):
         self.ex = 0
         self.ey = 0
-
         if keys[pygame.K_s]:
             self.ey += self.velocity
         if keys[pygame.K_w]:
             self.ey -= self.velocity
         if keys[pygame.K_a]:
             self.ex -= self.velocity
-            self.flip = True
+            self.flip = False
         if keys[pygame.K_d]:
             self.ex += self.velocity
-            self.flip = False
+            self.flip = True
 
 
         if self.ex != 0 and self.ey != 0:
@@ -60,9 +61,9 @@ class Player():
             self.frame = 0
             self.image = self.animations[self.frame]
                 
-        self.__x += self.ex
-        self.__y += self.ey 
-        self.pj_shape.center = (self.__x, self.__y)
+        self.x += self.ex
+        self.y += self.ey 
+        self.pj_shape.center = (self.x, self.y)
 
 
     def animate(self):
@@ -75,15 +76,48 @@ class Player():
         if self.frame >= len(self.animations):
             self.frame = 0
     
+    def switch(self):
+        if self.weapon_type == "sword":
+            self.weapon_type = "bow"
+            self.weapon = Bow(10)
 
-    
-    def attack(self, event) -> bool:
-        if event:
-            self.pvp = True
-        else:
-            self.pvp = False
-        
+        elif self.weapon_type == "bow" :
+            self.weapon_type = "sword"
+            self.weapon = Sword(10, self.x, self.y)
 
+    def attack(self, other):
+        if self.weapon_type == "sword":
+            self.weapon.attack(other)
+
+    def shoot(self, mouse):
+        self.weapon.shoot( self.x , self.y, mouse)
+
+    def UpdatePositionWeapon(self):
+        if self.weapon_type == "sword":
+            self.weapon.update_position(self.x , self.y)
 
     def get_pos(self):
-        return [self.__x, self.__y]
+        return [self.x, self.y]
+    
+
+
+
+
+
+
+
+"""
+    def switch_weapon(self):
+        if self.weapon_type == "sword":
+            self.weapon_type = "bow"
+
+        else:
+            self.weapon_type = "sword"
+            self.weapon = Melee()
+
+    def shoot(self, target_pos):
+        if self.weapon_type == "bow":
+            self.weapon.shoot(target_pos, (self.x, self.y))
+
+
+"""
