@@ -48,10 +48,15 @@ class Arrow():
         if self.active:
             self.x += self.vx
             self.y += self.vy
-
+    
     def draw(self, screen):
         if self.active:
             pygame.draw.circle(screen, (255, 255, 255), (int(self.x), int(self.y)), 5)
+    
+    
+    
+    
+
 
 
     def collision(self, enemy):
@@ -74,24 +79,15 @@ class Bow(Weapon):
             arrow.draw(screen)
             arrow.move()
 
-    def update_arrows(self, enemies):
+    def update_arrows(self, enemy):
         for arrow in self.carcaj:
-            for enemy in enemies:
-                if arrow.collision(enemy):
-                    super().attack(enemy)
+            if arrow.collision(enemy):
+                super().attack(enemy)
+                print("ataque de arco")
         self.carcaj = [arrow for arrow in self.carcaj if arrow.active]
 
-
     
-    def Off_screen(self):
-        for Arrow in self.carcaj:     
-            if Arrow.x > config.WIN_WIDTH:
-                del Arrow
-            if Arrow.y > config.WIN_WIDTH:
-                del Arrow
-
-
-
+    
 
 
 

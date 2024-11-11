@@ -9,7 +9,15 @@ class Enemy():
         self.color = (255, 0, 0)
         self.enemy_shape = pygame.Rect(0, 0 , 50 , 60)
         self.enemy_shape.center = (self.x, self.y)
+        self.life = 100
+        self.estatus = True
 
     def draw(self, screen):
         self.enemy_shape.topleft = (self.x, self.y)
         pygame.draw.rect(screen, self.color, self.enemy_shape)
+
+            
+    def death(self):
+        if self.life <= 0: 
+            self.life = 0
+            self.estatus = False

@@ -79,7 +79,7 @@ class Player():
     def switch(self):
         if self.weapon_type == "sword":
             self.weapon_type = "bow"
-            self.weapon = Bow(10)
+            self.weapon = Bow(100)
 
         elif self.weapon_type == "bow" :
             self.weapon_type = "sword"
@@ -95,29 +95,6 @@ class Player():
     def UpdatePositionWeapon(self):
         if self.weapon_type == "sword":
             self.weapon.update_position(self.x , self.y)
-
+    
     def get_pos(self):
         return [self.x, self.y]
-    
-
-
-
-
-
-
-
-"""
-    def switch_weapon(self):
-        if self.weapon_type == "sword":
-            self.weapon_type = "bow"
-
-        else:
-            self.weapon_type = "sword"
-            self.weapon = Melee()
-
-    def shoot(self, target_pos):
-        if self.weapon_type == "bow":
-            self.weapon.shoot(target_pos, (self.x, self.y))
-
-
-"""
