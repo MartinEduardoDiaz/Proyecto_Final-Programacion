@@ -43,25 +43,18 @@ class Arrow():
         angle = mt.atan2(mouse[1] - self.y, mouse[0] - self.x)
         self.vx = mt.cos(angle) * 2.5 
         self.vy = mt.sin(angle) * 2.5
-
+        self.rect = pygame.Rect(self.x, self.y, 5,5)
     def move(self):
         if self.active:
             self.x += self.vx
             self.y += self.vy
-    
+            self.rect.topleft = (self.x, self.y)
     def draw(self, screen):
         if self.active:
-            pygame.draw.circle(screen, (255, 255, 255), (int(self.x), int(self.y)), 5)
-    
-    
-    
+            pygame.draw.rect(screen,(255,255,255), self.rect)
     
 
 
-
-    def collision(self, enemy):
-            distance = mt.sqrt((self.x - enemy.x)**2 + (self.y - enemy.y)**2)
-            return distance < 20  
     
 
 
@@ -81,9 +74,8 @@ class Bow(Weapon):
 
     def update_arrows(self, enemy):
         for arrow in self.carcaj:
-            if arrow.collision(enemy):
+            if arrow.rect.colliderect(enemy.enemy_shape):
                 super().attack(enemy)
-                print("ataque de arco")
         self.carcaj = [arrow for arrow in self.carcaj if arrow.active]
 
     

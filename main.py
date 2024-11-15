@@ -18,7 +18,7 @@ def main():
 
     Pj = Player()
 
-    enemies = [Enemy(random.randint(0, config.WIN_WIDTH-2), random.randint(0, config.WIN_HEIGHT - 2)) for _ in range(999)]
+    enemies = [Enemy(random.randint(0, config.WIN_WIDTH-2), random.randint(0, config.WIN_HEIGHT - 2)) for _ in range(12)]
 
 
     running = True 
@@ -50,6 +50,7 @@ def main():
                 Pj.weapon.update_arrows(enemy)
 
 
+
         
         Pj.UpdatePositionWeapon()
         key = pygame.key.get_pressed()
@@ -64,6 +65,7 @@ def main():
 
         Pj.weapon.draw(screen)
         pygame.display.update()
+
 
     pygame.quit()
 
