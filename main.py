@@ -1,73 +1,31 @@
 import pygame 
 import config
-import random
+from screens import MainScreen
 
-from player import Player
-from enemy import Enemy
 
-def main(): 
 
+pygame.init()
+
+class Game():
+    def __init__(self) -> None:
+        self.screen = pygame.display.set_mode((config.WIN_HEIGHT,config.WIN_WIDTH))
+        pygame.display.set_caption("Fangs of The Underworld")
+        pygame.display.set_icon(config.ICON)
+        self.screen_scene = MainScreen(self)
+        self.GameOver = False
+    
+    def change_screen(self, new_screen):
+        self.screen_scene = new_screen
+    
+    def run(self):
+        while not self.GameOver:
+            self.screen.fill((0,0,0))
+            self.screen_scene.draw()
+            self.screen_scene.events()
+            pygame.display.flip()
         
-    pygame.init()
-    screen = pygame.display.set_mode((config.WIN_HEIGHT,config.WIN_WIDTH))
-    pygame.display.set_caption("Fangs of The Underworld")
-    pygame.display.set_icon(config.ICON)
-
-
-    screen_Background = config.menu_background
-
-    Pj = Player()
-
-    enemies = [Enemy(random.randint(0, config.WIN_WIDTH-2), random.randint(0, config.WIN_HEIGHT - 2)) for _ in range(12)]
-
-
-    running = True 
-
-    while running:  
-        screen.fill((0,0,0))
-        screen.blit(screen_Background,(0,0))
-        enemies = [enemy for enemy in enemies if enemy.estatus]
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
-                if Pj.weapon_type == "bow":
-                    Pj.shoot(mouse_pos)
-                
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_q:
-                    Pj.switch()
-
-
-
-
-        for enemy in enemies:
-            enemy.death()
-            enemy.draw(screen)
-            if Pj.weapon_type == "bow":
-                Pj.weapon.update_arrows(enemy)
-
-
-
-        
-        Pj.UpdatePositionWeapon()
-        key = pygame.key.get_pressed()
-        Pj.draw(screen)
-        Pj.move(key)
-
-
-
-
-
-            
-
-        Pj.weapon.draw(screen)
-        pygame.display.update()
-
-
-    pygame.quit()
+    
 
 if __name__ == "__main__":
-    main() 
+    game  = Game() 
+    game.run()
