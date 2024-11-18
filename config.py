@@ -55,16 +55,18 @@ background = pygame.transform.scale(background, (WIN_HEIGHT, new_height))
 
 #personaje 
 pj_scale = 1.3
-animations = []
-for x in range(8): 
-            img = pygame.image.load(f"assets/images/characters/player/frame {x}.png")
+animations_movement = []
+for i in range(8): 
+            img = pygame.image.load(f"assets/images/characters/player/frame {i}.png")
             img = img_scale(img , pj_scale)
-            animations.append(img)
+            animations_movement.append(img)
         
 
-
-
-
+animations_attack_sw = []
+for i in range(5): 
+            img = pygame.image.load(f"assets/images/characters/player/attackAnimations/attack_Sw/frame_{i}.png")
+            img = img_scale(img , pj_scale)
+            animations_attack_sw.append(img)
 
 
 

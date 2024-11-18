@@ -21,16 +21,17 @@ class Player():
         self.pj_shape.center = (self.x, self.y)
 
         #Imagen y rect
-        self.animations = config.animations
+        self.animationsMove = config.animations_movement
+        self.animationsAttackSw = config.animations_attack_sw
         self.frame = 0
-        self.image = self.animations[self.frame]
+        self.image = self.animationsMove[self.frame]
         self.flip = True
         self.color = (255,255,255)
         self.ticks = pygame.time.get_ticks()
 
 
 
-
+    #Draw Funcion para dibujar al personaje  en la pantalla
     def draw(self,screen)-> None:
         self.image_flip = pygame.transform.flip(self.image, self.flip, False)
         screen.blit(self.image_flip , self.pj_shape)
@@ -59,7 +60,7 @@ class Player():
             self.animate() 
         else:
             self.frame = 0
-            self.image = self.animations[self.frame]
+            self.image = self.animationsMove[self.frame]
                 
         self.x += self.ex
         self.y += self.ey 
@@ -68,14 +69,18 @@ class Player():
 
     def animate(self):
         colldown_ani =  150 #ms 
-        self.image = self.animations[self.frame]
+        self.image = self.animationsMove[self.frame]
         
         if pygame.time.get_ticks() - self.ticks >= colldown_ani:
             self.frame += 1
             self.ticks = pygame.time.get_ticks()
-        if self.frame >= len(self.animations):
+        if self.frame >= len(self.animationsMove):
             self.frame = 0
-    
+
+        
+
+
+
     def switch(self):
         if self.weapon_type == "sword":
             self.weapon_type = "bow"
@@ -89,12 +94,14 @@ class Player():
         if self.weapon_type == "sword":
             self.weapon.attack(other)
 
+
     def shoot(self, mouse):
         self.weapon.shoot( self.x , self.y, mouse)
+
+
+
+
 
     def UpdatePositionWeapon(self):
         if self.weapon_type == "sword":
             self.weapon.update_position(self.x , self.y)
-    
-    def get_pos(self):
-        return [self.x, self.y]

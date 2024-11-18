@@ -3,7 +3,7 @@ import random
 import pygame
 import config
 from player import Player
-from enemy import Enemy
+from enemy import Enemy_orco
 from buttons import Title
 
 
@@ -72,7 +72,7 @@ class GameplayScreen(Scene):
         super().__init__(Game)
         self.screen_Background = config.background
         self.Pj = Player()
-        self.enemies = [Enemy(random.randint(0, config.WIN_WIDTH-2), random.randint(0, config.WIN_HEIGHT - 2)) for _ in range(12)]
+        self.enemies = [Enemy_orco("Orco",random.randint(0, config.WIN_WIDTH-2), random.randint(0, config.WIN_HEIGHT - 2), ) for _ in range(12)]
 
 
     def draw(self):
@@ -96,6 +96,7 @@ class GameplayScreen(Scene):
                 if self.Pj.weapon_type == "bow":
                     mouse__pos = pygame.mouse.get_pos()
                     self.Pj.shoot(mouse__pos)
+
                 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
@@ -108,6 +109,7 @@ class GameplayScreen(Scene):
             enemy.move(self.Pj.x, self.Pj.y)
             if self.Pj.weapon_type == "bow":
                 self.Pj.weapon.update_arrows(enemy)
+                
         
         
         
