@@ -7,7 +7,7 @@ from screens import MainScreen
 pygame.init()
 
 class Game():
-    def __init__(self) -> None:
+    def __init__(self):
         self.screen = pygame.display.set_mode((config.WIN_HEIGHT,config.WIN_WIDTH))
         pygame.display.set_caption("Fangs of The Underworld")
         pygame.display.set_icon(config.ICON)
@@ -29,3 +29,12 @@ class Game():
 if __name__ == "__main__":
     game  = Game() 
     game.run()
+
+
+  
+
+
+
+
+
+    

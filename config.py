@@ -70,6 +70,22 @@ for i in range(5):
 
 
 
+#Enemigos 
+#slime  
+
+slime_Scale = 0.05
+SlimeAnimation = []
+for i in range(4):
+        im = pygame.image.load(f"assets/images/characters/enemies/slime/slime {i}.png")
+        im = img_scale(im, slime_Scale)
+        SlimeAnimation.append(im)
+
+#goblin
+orco  = []
+for i in range(1,4):
+        im = pygame.image.load(f"assets/images/characters/enemies/orco/Goblin ({i}).png")
+        im = img_scale(im, 0.09)
+        orco.append(im)        
 
 
 
@@ -78,7 +94,13 @@ for i in range(5):
 
 
 
-
+#arrow 
+dagascale = 0.02
+dagaAni =  []
+for i in range(1,7):
+        img = pygame.image.load(f"assets/images/items/Daga/daga ({i}).png")
+        img = img_scale(img , dagascale)
+        dagaAni.append(img)
 
 
 
