@@ -40,7 +40,7 @@ class Button():
             self.hover = False
 
     def draw(self,screen):
-        self.color = (255, 195, 0, 1) if self.hover else (255, 195, 0, 1)
+        self.color = (52, 162, 140) if self.hover else (60, 191, 165 )
         pygame.draw.rect(screen, self.color, self.rect, border_radius=5)
         screen.blit(self.text, self.text_rect)
 
