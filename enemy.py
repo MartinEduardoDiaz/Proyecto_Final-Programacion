@@ -31,7 +31,7 @@ class Enemy():
 
     def colision(self,player, enemies):
         for enemy in enemies:
-                if player.pj_shape.colliderect(enemy.enemy_shape):  # Verifica colisión
+                if player.pj_shape.colliderect(enemy.enemy_shape):  
                     player.takeDamage(self.AD)
     def animate(self):
         pass
