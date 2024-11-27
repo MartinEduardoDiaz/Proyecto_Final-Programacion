@@ -10,13 +10,13 @@ class Player():
         #stats del juego 
         self.armor = 0
         self.life = 100
-        self.velocity = 0.5
+        self.velocity = 2
         self.weapon_type =  "sword"
         
         #vista en pantalla
         self.x = (config.WIN_WIDTH / 2)
         self.y = (config.WIN_HEIGHT / 2)
-        self.weapon =Sword(100, self.x, self.y)
+        self.weapon =Sword(8, self.x, self.y)
         self.pj_shape = pygame.Rect(0, 0 , 49 , 60)
         self.pj_shape.center = (self.x, self.y)
 
@@ -38,7 +38,7 @@ class Player():
     def draw(self,screen)-> None:
         self.image_flip = pygame.transform.flip(self.image, self.flip, False)
         screen.blit(self.image_flip , self.pj_shape)
-        pygame.draw.rect(screen, self.color , self.pj_shape, 1 )
+        #pygame.draw.rect(screen, self.color , self.pj_shape, 1 )
     
     def move(self,keys):
         self.ex = 0
@@ -72,31 +72,6 @@ class Player():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def animate(self):
         colldown_ani = 150  #ms
         self.attack_timer = pygame.time.get_ticks()
@@ -126,21 +101,6 @@ class Player():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def attack(self, other):
         if self.weapon_type == "sword":
             self.weapon.attack(other)
@@ -151,27 +111,14 @@ class Player():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     def switch(self):
         if self.weapon_type == "sword":
             self.weapon_type = "bow"
-            self.weapon = Bow(100)
+            self.weapon = Bow(8)
 
         elif self.weapon_type == "bow" :
             self.weapon_type = "sword"
-            self.weapon = Sword(10, self.x, self.y)
+            self.weapon = Sword(6, self.x, self.y)
 
 
 

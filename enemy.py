@@ -45,7 +45,7 @@ class Enemy_orco(Enemy):
         self.x = x
         self.y = y
         self.color = (255, 0, 0)
-        self.AD = 10
+        self.AD = 12
 
         self.enemy_shape = pygame.Rect(0, 0 , 50 , 60)
         self.enemy_shape.center = (self.x , self.y)
@@ -70,7 +70,7 @@ class Enemy_orco(Enemy):
             
     def draw(self, screen):
         self.enemy_shape.topleft = (self.x, self.y)
-        pygame.draw.rect(screen, self.color, self.enemy_shape, 1)
+       #pygame.draw.rect(screen, self.color, self.enemy_shape, 1)
         screen.blit(self.image , self.enemy_shape.topleft)
 
 
@@ -83,7 +83,7 @@ class Enemy_orco(Enemy):
 class Slime(Enemy):
     def __init__(self, x: int, y: int):
         super().__init__()
-
+        self.life = 50
 
         self.x = x
         self.y = y
@@ -101,7 +101,7 @@ class Slime(Enemy):
         
     def draw(self, screen):
         self.enemy_shape.center = (self.x, self.y)
-        pygame.draw.rect(screen, (255,0,0), self.enemy_shape, 1)
+        #pygame.draw.rect(screen, (255,0,0), self.enemy_shape, 1)
         screen.blit(self.image, self.image.get_rect(center=self.enemy_shape.center).topleft)
 
 
@@ -121,3 +121,9 @@ class Slime(Enemy):
     def death(self):
         return super().death()
 
+
+
+class boss(Enemy):
+    def __init__(self):
+        super().__init__()
+        self.life = 100000

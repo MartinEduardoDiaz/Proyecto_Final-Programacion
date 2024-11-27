@@ -33,7 +33,7 @@ class Sword(Weapon):
         self.y = y
 
     def draw(self,screen):
-        pygame.draw.circle(screen, (255,255,255), (self.x, self.y), self.range, 1 )
+        pass    #pygame.draw.circle(screen, (255,255,255), (self.x, self.y), self.range, 1 )
 
 
 

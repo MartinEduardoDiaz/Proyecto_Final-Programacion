@@ -79,37 +79,41 @@ class GameplayScreen(Scene):
     
         self.start_time = pygame.time.get_ticks()
 
-
+        self.last_message_time = 0  
  
 
         self.rango0 = 10
         self.rango1 = 5
         
         
-        self.enemies_sl = [Slime(random.randint(-800, 800), random.randint(0, config.WIN_HEIGHT) ) for _ in range(self.rango0)]
-        self.enemies_gob = [Enemy_orco(random.randint(-800, 800), random.randint(0, config.WIN_HEIGHT) ) for _ in range(self.rango1)]
-
+        self.enemies_sl = [Slime(random.randint(-800, 800), random.randint(0, config.WIN_HEIGHT) ) for _ in range(10)]
+        self.enemies_gob = [Enemy_orco(random.randint(-800, 800), random.randint(0, config.WIN_HEIGHT) ) for _ in range(5)]
+        self.enemies = self.enemies_gob
+        self.enemies.extend(self.enemies_sl)
 
 
 
     def draw(self):
-        last_message_time = 0  
+
         elapsed_time = pygame.time.get_ticks() - self.start_time
         minutes = elapsed_time // 60000  
         seconds = (elapsed_time // 1000) % 60  
 
-        current_ticks = pygame.time.get_ticks()
 
-        if current_ticks - last_message_time >= 15000:  
-            self.rango0 += 10
-            self.rango1 += 5
-            last_message_time = current_ticks
+        if pygame.time.get_ticks() - self.last_message_time >= 15000:  
 
-        self.timer_text = self.font.render(f"{minutes:02}:{seconds:02}", True, "BLACK")
+            self.last_message_time = pygame.time.get_ticks() 
+            self.enemies_sl.extend([Slime(random.randint(-800, 800), random.randint(0, config.WIN_HEIGHT)) for _ in range(10)])
+            self.enemies_gob.extend([Enemy_orco(random.randint(-800, 800), random.randint(0, config.WIN_HEIGHT)) for _ in range(5)])
+            self.enemies.extend(self.enemies_sl[-20:] + self.enemies_gob[-20:])
+
+
+        self.timer_text = self.font.render(f"{minutes:02}:{seconds:02}", True, "white")
 
         self.enemies_sl = [enemy for enemy in self.enemies_sl if enemy.estatus]
         self.enemies_gob = [enemy for enemy in self.enemies_gob if enemy.estatus]
 
+        self.enemies = [enemy for enemy in self.enemies if enemy.estatus]
 
         self.Game.screen.blit(self.screen_Background,(0,0))
 
@@ -150,9 +154,11 @@ class GameplayScreen(Scene):
         self.Pj.move(keys)
 
 
+
         mouse = pygame.mouse.get_pressed()
         for enemy in self.enemies_sl:
             enemy.move(self.Pj.x, self.Pj.y)
+            enemy.death()
             if self.Pj.weapon_type == "bow":
                 self.Pj.weapon.update_arrows(enemy)
             if self.Pj.weapon_type == "sword" and  press:
@@ -162,12 +168,14 @@ class GameplayScreen(Scene):
         
         for enemy in self.enemies_gob:
             enemy.move(self.Pj.x, self.Pj.y)
+            enemy.death()
             if self.Pj.weapon_type == "bow":
                 self.Pj.weapon.update_arrows(enemy)
             if self.Pj.weapon_type == "sword" and  press:
                 self.Pj.weapon.attack(enemy)
                 self.Pj.atack = mouse[0]
-
+        for enemy in self.enemies:
+            enemy.colision(self.Pj , self.enemies)
 
     def exit(self):
         return super().exit()

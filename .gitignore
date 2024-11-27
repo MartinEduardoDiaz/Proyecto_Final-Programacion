@@ -1,0 +1,21 @@
+# Ignorar el directorio __pycache__
+__pycache__/
+
+# Ignorar archivos de bytecode
+*.pyc
+*.pyo
+
+# Ignorar entornos virtuales
+venv/
+env/
+ENV/
+.env
+
+# Ignorar archivos de configuración de IDEs
+.vscode/
+.idea/
+*.swp
+
+# Ignorar archivos de salida
+*.log
+*.sqlite3
