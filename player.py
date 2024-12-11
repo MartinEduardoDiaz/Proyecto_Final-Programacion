@@ -2,21 +2,24 @@ import pygame
 import config
 from weapons import Sword, Bow
 import math as mt
-
+import random
 
 
 class Player():
     def __init__(self):
+        
         #stats del juego 
         self.armor = 0
         self.life = 100
-        self.velocity = 2
+        self.velocity = 0.5
         self.weapon_type =  "sword"
-        
+        self.damagesw = 8
+        self.damageBow = 4
+       
         #vista en pantalla
         self.x = (config.WIN_WIDTH / 2)
         self.y = (config.WIN_HEIGHT / 2)
-        self.weapon =Sword(8, self.x, self.y)
+        self.weapon =Sword(self.damagesw, self.x, self.y)
         self.pj_shape = pygame.Rect(0, 0 , 49 , 60)
         self.pj_shape.center = (self.x, self.y)
 
@@ -29,11 +32,13 @@ class Player():
         self.color = (255,255,255)
         self.ticks = pygame.time.get_ticks()
         
-
+        self.last_damage_time = 0
         self.pj_move = False
         self.atack = False
         self.status = True
-
+        self.__randomStat= ["armor" , "damage", "speed"]
+        self.exp = 0
+        self.aux = 20
     #Draw Funcion para dibujar al personaje  en la pantalla
     def draw(self,screen)-> None:
         self.image_flip = pygame.transform.flip(self.image, self.flip, False)
@@ -53,7 +58,16 @@ class Player():
         if keys[pygame.K_d]:
             self.ex += self.velocity
             self.flip = True
+        
+        if self.x < 0:
+            self.x = 0
+        elif self.x > config.WIN_WIDTH:
+            self.x = config.WIN_WIDTH
 
+        if self.y < 0:
+            self.y = 0
+        elif self.y > config.WIN_HEIGHT:
+            self.y = config.WIN_HEIGHT
 
         if self.ex != 0 and self.ey != 0:
             self.ex /= mt.sqrt(2)
@@ -87,11 +101,10 @@ class Player():
 
 
     def atackAni(self,screen):
-        
         if self.atack:
             aux = pygame.time.get_ticks()
             for i in range(len(self.animationsAttackSw)):
-                    print(aux)
+
                     self.image = self.animationsAttackSw[i]
                     self.draw(screen)
                     pygame.display.update()
@@ -114,11 +127,11 @@ class Player():
     def switch(self):
         if self.weapon_type == "sword":
             self.weapon_type = "bow"
-            self.weapon = Bow(8)
+            self.weapon = Bow(self.damageBow)
 
         elif self.weapon_type == "bow" :
             self.weapon_type = "sword"
-            self.weapon = Sword(6, self.x, self.y)
+            self.weapon = Sword(self.damagesw, self.x, self.y)
 
 
 
@@ -127,7 +140,37 @@ class Player():
             self.weapon.update_position(self.x , self.y)
 
     def takeDamage(self, damage):
-        self.life -= damage
-        if self.life <= 0:
-            self.status = False
-            print("mori")
+        current_time = pygame.time.get_ticks() 
+
+        if current_time - self.last_damage_time >= 700:
+            self.life -= damage
+            self.last_damage_time = current_time  
+
+            if self.life <= 0:
+                self.status = False
+                print("mori")
+    @property
+    def randomStat(self):
+        return self.__randomStat
+    
+    @randomStat.setter
+    def randomStat(self, stats):
+        assert stats in self.__randomStat,  "estadistica no definida"
+        self.__randomStat.append(stats)
+    
+    def setstat(self):
+        currentStat = random.choice(self.__randomStat)
+        if currentStat == "armor":
+            self.armor +=1
+        elif currentStat =="damage":
+            self.damagesw += 2
+            self.damageBow += 1
+        elif currentStat == "speed":
+            self.velocity += 0.01
+
+
+    def count(self):
+        self.exp +=1
+        if self.exp == self.aux:
+            self.setstat()
+            self.exp = 0
