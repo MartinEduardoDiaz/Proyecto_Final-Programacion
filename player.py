@@ -3,7 +3,7 @@ import config
 from weapons import Sword, Bow
 import math as mt
 import random
-
+from ui import Button
 
 class Player():
     def __init__(self):
@@ -13,8 +13,8 @@ class Player():
         self.life = 100
         self.velocity = 0.5
         self.weapon_type =  "sword"
-        self.damagesw = 8
-        self.damageBow = 4
+        self.damagesw = 100
+        self.damageBow = 100
        
         #vista en pantalla
         self.x = (config.WIN_WIDTH / 2)
@@ -39,6 +39,7 @@ class Player():
         self.__randomStat= ["armor" , "damage", "speed"]
         self.exp = 0
         self.aux = 20
+
     #Draw Funcion para dibujar al personaje  en la pantalla
     def draw(self,screen)-> None:
         self.image_flip = pygame.transform.flip(self.image, self.flip, False)
@@ -174,3 +175,7 @@ class Player():
         if self.exp == self.aux:
             self.setstat()
             self.exp = 0
+    
+
+
+            

@@ -49,7 +49,7 @@ class Enemy_orco(Enemy):
 
         self.enemy_shape = pygame.Rect(0, 0 , 50 , 60)
         self.enemy_shape.center = (self.x , self.y)
-        self.speed = 1
+        self.speed = 0.5
         self.animations= config.orco
         self.frame = 0
         self.image = self.animations[self.frame]
@@ -96,7 +96,7 @@ class Slime(Enemy):
         self.ticks = pygame.time.get_ticks()
         self.AD = 5
         self.image = self.animations[self.frame]
-        self.speed = 0.1
+        self.speed = 0.3
         self.enemy_shape = pygame.Rect(0, 0 , 42 , 30)
         self.enemy_shape.topleft = (self.x, self.y )
 

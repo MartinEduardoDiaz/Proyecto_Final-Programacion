@@ -3,7 +3,7 @@ import pygame
 import config
 from player import Player
 from enemy import Enemy_orco, Slime
-from ui import Title, lifes
+from ui import Title, lifes, Button
 
 
 
@@ -52,15 +52,15 @@ class MainScreen(Scene):
 
                 
         for button in config.buttons:
-                    button.click_on()
-                    if button.clicked and button.name == "Jugar":
-                        self.Game.change_screen(GameplayScreen(self.Game))
-                    if button.clicked and button.name == "Logros":
-                        print(f"Button clicked {button.name}")  
-                    if button.clicked and button.name == "Opciones":
-                        self.Game.change_screen(OptionsScreen(self.Game , self.screen_Background))    
-                    if button.clicked and button.name == "Salir":
-                        self.exit()
+            button.click_on()
+            if button.clicked and button.name == "Jugar":
+                self.Game.change_screen(GameplayScreen(self.Game))
+                if button.clicked and button.name == "Logros":
+                    print(f"Button clicked {button.name}")  
+                if button.clicked and button.name == "Opciones":
+                    self.Game.change_screen(OptionsScreen(self.Game , self.screen_Background))    
+                if button.clicked and button.name == "Salir":
+                    self.exit()
 
         
     def exit(self):
@@ -72,6 +72,7 @@ class OptionsScreen(Scene):
         super().__init__(Game)
         self.screen_Background = background
         self.buttons =config.buttons_op
+    
     def draw(self):
         self.Game.screen.blit(self.screen_Background,(0,0))
         for button in self.buttons:
@@ -99,12 +100,22 @@ class GameplayScreen(Scene):
         self.rango1 = 5
         
         
+
         self.enemies_sl = [Slime(random.randint(-800, 800), random.randint(0, config.WIN_HEIGHT) ) for _ in range(10)]
         self.enemies_gob = [Enemy_orco(random.randint(-800, 800), random.randint(0, config.WIN_HEIGHT) ) for _ in range(5)]
         self.enemies = self.enemies_gob
         self.enemies.extend(self.enemies_sl)
 
         self.lifecounter = lifes(1200, 10)
+
+        self.buttons_text = ["armor","damage","speed"]
+        self.but_pos = 150
+        self.buttons = []
+        for txt in self.buttons_text:
+            self.but_pos +=200
+            self.button = Button(self.but_pos,500 , 100,100, txt,txt,(26, 26, 26) , (45, 58, 69 ))
+            self.buttons.append(self.button)
+    
 
     def draw(self):
         
@@ -134,13 +145,22 @@ class GameplayScreen(Scene):
 
 
         self.enemiesDeath = [enemy for enemy in self.enemies if enemy.estatus == False]
+
+
+        self.Game.screen.blit(self.round_text, (500, 10))
+        self.lifecounter.draw(self.Game.screen)
+    
+        if self.Pj.exp == 15:
+            for button in self.buttons:
+                button.draw(self.Game.screen)
+
+
         if len(self.enemiesDeath) == len(self.enemies):
             self.enemies_sl.extend([Slime(random.randint(-800, 800), random.randint(0, config.WIN_HEIGHT)) for _ in range(10)])
             self.enemies_gob.extend([Enemy_orco(random.randint(-800, 800), random.randint(0, config.WIN_HEIGHT)) for _ in range(5)]) 
             self.enemies.extend(self.enemies_sl[-20:] + self.enemies_gob[-20:])
             self.ronda += 1
-        self.Game.screen.blit(self.round_text, (500, 10))
-        self.lifecounter.draw(self.Game.screen)
+
     def events(self):
         press = False
         keys = pygame.key.get_pressed()
@@ -167,6 +187,16 @@ class GameplayScreen(Scene):
 
         mouse = pygame.mouse.get_pressed()
 
+        for button in self.buttons:
+            button.click_on()
+            if button.clicked and button.name == "armor":
+                self.Pj.randomStat.append("armor")
+            if button.clicked and button.name == "speed":
+                self.Pj.randomStat.append("speed")
+            if button.clicked and button.name == "damage":
+                self.Pj.randomStat.append("damage")
+            
+
         for enemy in self.enemies:
             enemy.move(self.Pj.x, self.Pj.y)
             enemy.death()
@@ -179,6 +209,7 @@ class GameplayScreen(Scene):
                 self.Pj.count()
         
             enemy.colision(self.Pj , self.enemies)
+    
         if not self.Pj.status:
             self.Game.change_screen(DeathScreen(self.Game, self.screen_Background, self.ronda, (self.minutes , self.seconds)))
 
